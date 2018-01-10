@@ -1,0 +1,5 @@
+services:
+      parabol.type_extension.google_maps_picker:
+        class: Parabol\GoogleMapsPickerBundle\Form\Type\GoogleMapsPickerType
+        tags:
+            - { name: form.type, alias: parabol_google_maps_picker }

@@ -1,0 +1,62 @@
+{% block parabol_google_maps_picker_widget %}
+
+<div id="{{ form.vars.id }}_map_canvas" style="width:100%; height:{{ height is defined ? height : '660'}}px"></div>
+
+{# {{ dump(form) }} #}
+{% for row in form.children %}
+  {{ form_row(row) }}
+{% endfor %}
+
+{% if form.vars.label == ' ' %}
+  <style>
+      .form-model-type-parabolGoogleMapsPickerbundleformtypeGoogleMapsPickertype > .form-group > label { display: none;  }
+  </style>
+{% endif %}
+
+{# <input type="text" id="{{ form.vars.id }}_lat" name="{{ form.vars.full_name }}[]" value="" />
+<input type="text" id="{{ form.vars.id }}_lng" name="{{ form.vars.full_name }}[]" value="" /> #}
+
+{# 
+{% if latName is defined and lngName is defined and  loc is defined %}
+  
+
+  <script type="text/javascript">
+    // var fields_with_address_parts = "#{{ fields | join(', #') }}"
+    // var address_parts_pattern = "{{ pattern is defined ? pattern : ('%' ~ fields | join('%, %') ~ '%') }}"
+  </script>
+
+{% endif %} #}
+<script src="https://maps.google.com/maps/api/js?key={{ googleMapId is defined ? googleMapId : 'AIzaSyATh2UFe80IWhVrqENGZg5SZeKdGuaihw0' }}"></script>	
+<script src="/bundles/parabolGoogleMapsPicker/GoogleMapsPickerpicker.js"></script>	
+
+<script type="text/javascript">
+
+
+$(document).ready(function(){
+
+  	var gm = new GoogleMapPicker({ 
+      mapId: '{{ form.vars.id }}_map_canvas',
+      coordsInputsPrefix: '{{ form.vars.id }}_',
+      initLatLng: [{{ form.vars.initLatLng | join(',') }}],
+      initWithMarker: [{{ form.vars.initWithMarker }}],
+      mapOptions: {{ form.vars.mapOptions | raw }}
+    });
+
+
+  // 	GoogleMapsPicker_initialize(
+  //   '',
+  //   new google.maps.LatLng(34,57),
+  //   false,
+  //   false, 
+  //   ''
+  // );
+
+  // map_init()
+
+});
+
+
+</script>
+
+
+{% endblock parabol_google_maps_picker_widget %}
