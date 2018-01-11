@@ -11,11 +11,22 @@ class GoogleMapPicker {
       this.init(initWithMarker);
       this.setMarkers(markers)
 
-      document.getElementById('edit_arterybundle_aparthotel_address').onkeyup = (e) => {
-         if(e.target.value)
-         {
-            this.applyLatLagByAddress(e.target.value);
-         }
+      if(document.getElementById('edit_appbundle_flat_location'))
+      { document.getElementById('edit_appbundle_flat_location').onkeyup = (e) => {
+           if(e.target.value)
+           {
+              this.applyLatLagByAddress(e.target.value);
+           }
+        }
+      }
+      else if(document.getElementById('new_appbundle_flat_location'))
+      {
+        document.getElementById('new_appbundle_flat_location').onkeyup = (e) => {
+           if(e.target.value)
+           {
+              this.applyLatLagByAddress(e.target.value);
+           }
+        }
       }
     }
 
