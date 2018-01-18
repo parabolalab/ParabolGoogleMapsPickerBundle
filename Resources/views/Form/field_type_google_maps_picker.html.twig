@@ -39,7 +39,8 @@ $(document).ready(function(){
       coordsInputsPrefix: '{{ form.vars.id }}_',
       initLatLng: [{{ form.vars.initLatLng | join(',') }}],
       initWithMarker: [{{ form.vars.initWithMarker }}],
-      mapOptions: {{ form.vars.mapOptions | raw }}
+      mapOptions: {{ form.vars.mapOptions | raw }},
+      addresField: '{{ form.vars.addresField }}'
     });
 
 

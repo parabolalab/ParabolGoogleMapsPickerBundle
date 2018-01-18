@@ -1,27 +1,38 @@
 class GoogleMapPicker {
    
-    constructor({ mapId = 'map_canvas', initLatLng = [0,0], coordsInputsPrefix = '', initWithMarker = true, mapOptions = { }, markers = [] } = {} ){
+    constructor({ mapId = 'map_canvas', initLatLng = [0,0], coordsInputsPrefix = '', addresField = 'form_address',  initWithMarker = true, mapOptions = { }, markers = [] } = {} ){
       
       this.mapId = mapId
       this.marker = null;
       this.markers = [];
       this.dragEvent = null;
       this.coordsInputsPrefix = coordsInputsPrefix;
+      this.addresField = addresField
       this.mapOptions = Object.assign({}, {zoom: 6, center: this.createLatLng(initLatLng[0], initLatLng[1]), streetViewControl: false, scrollwheel: false }, mapOptions)
       this.init(initWithMarker);
       this.setMarkers(markers)
 
-      if(document.getElementById('edit_appbundle_flat_location'))
-      { document.getElementById('edit_appbundle_flat_location').onkeyup = (e) => {
+      if(document.getElementById(this.addresField ))
+      { 
+        document.getElementById(this.addresField ).onkeyup = (e) => {
            if(e.target.value)
            {
               this.applyLatLagByAddress(e.target.value);
            }
         }
       }
-      else if(document.getElementById('new_appbundle_flat_location'))
+      else if(document.getElementById('edit_' + this.addresField ))
+      { 
+        document.getElementById('edit_' + this.addresField ).onkeyup = (e) => {
+           if(e.target.value)
+           {
+              this.applyLatLagByAddress(e.target.value);
+           }
+        }
+      }
+      else if(document.getElementById('new_' + this.addresField ))
       {
-        document.getElementById('new_appbundle_flat_location').onkeyup = (e) => {
+        document.getElementById('new_' + this.addresField ).onkeyup = (e) => {
            if(e.target.value)
            {
               this.applyLatLagByAddress(e.target.value);
