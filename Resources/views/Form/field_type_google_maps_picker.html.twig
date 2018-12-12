@@ -39,19 +39,10 @@ $(document).ready(function(){
       coordsInputsPrefix: '{{ form.vars.id }}_',
       initLatLng: [{{ form.vars.initLatLng | join(',') }}],
       initWithMarker: [{{ form.vars.initWithMarker }}],
-      mapOptions: {{ form.vars.mapOptions | raw }}
+      mapOptions: {{ form.vars.mapOptions | raw }},
+      addressField: '{{ form.vars.addressField }}'
     });
 
-
-  // 	GoogleMapsPicker_initialize(
-  //   '',
-  //   new google.maps.LatLng(34,57),
-  //   false,
-  //   false, 
-  //   ''
-  // );
-
-  // map_init()
 
 });
 
