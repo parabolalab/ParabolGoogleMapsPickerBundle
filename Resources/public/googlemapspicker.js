@@ -1,6 +1,6 @@
 class GoogleMapPicker {
    
-    constructor({ mapId = 'map_canvas', initLatLng = [0,0], coordsInputsPrefix = '', addressField = 'form_address',  initWithMarker = true, mapOptions = { }, markers = [] } = {} ){
+    constructor({ mapId = 'map_canvas', initLatLng = [0,0], coordsInputsPrefix = '', addressField = 'form_address',  initWithMarker = true, initWithRefreshMarker = false, mapOptions = { }, markers = [] } = {} ){
       
       this.mapId = mapId
       this.marker = null;
@@ -11,34 +11,31 @@ class GoogleMapPicker {
       this.mapOptions = Object.assign({}, {zoom: 6, center: this.createLatLng(initLatLng[0], initLatLng[1]), streetViewControl: false, scrollwheel: false }, mapOptions)
       this.init(initWithMarker);
       this.setMarkers(markers)
+      this.queryString = '';
+      this.request = null;
 
-      if(document.getElementById(this.addressField ))
-      { 
-        document.getElementById(this.addressField ).onkeyup = (e) => {
-           if(e.target.value)
-           {
-              this.applyLatLagByAddress(e.target.value);
-           }
-        }
+      
+      document.querySelectorAll( this.addressField ).forEach( (item) => {
+
+      item.onkeyup = (e) => {
+
+        console.log('onkeyup');
+       
+         this.applyLatLagByAddress(e.target.value);
+
+         // if(e.target.value)
+         // {
+         //    this.applyLatLagByAddress(e.target.value);
+         // }
       }
-      else if(document.getElementById('edit_' + this.addressField ))
-      { 
-        document.getElementById('edit_' + this.addressField ).onkeyup = (e) => {
-           if(e.target.value)
-           {
-              this.applyLatLagByAddress(e.target.value);
-           }
-        }
-      }
-      else if(document.getElementById('new_' + this.addressField ))
+
+      if(initWithRefreshMarker)
       {
-        document.getElementById('new_' + this.addressField ).onkeyup = (e) => {
-           if(e.target.value)
-           {
-              this.applyLatLagByAddress(e.target.value);
-           }
-        }
+          item.dispatchEvent(new Event('keyup'))
       }
+    })
+      
+      
     }
 
     init(initWithMarker)
@@ -141,21 +138,37 @@ class GoogleMapPicker {
 
     applyLatLagByAddress(address)
     {
-        let geocoder = new google.maps.Geocoder();
+        let query = ''
+        document.querySelectorAll(this.addressField).forEach((item) => {
+            if(item.value)
+            {
+              query += (query ? ', ' : '') + item.value
+            } 
+        })
 
-        geocoder.geocode({ 'address': address }, function (results, status) {
+        if(this.request) clearTimeout(this.request);
 
-            console.log(this)
+        this.request = setTimeout(() => {
 
-            if (status == google.maps.GeocoderStatus.OK) {
-                
-                this.map.setCenter(results[0].geometry.location);
-                this.insertMarker(results[0].geometry.location)
+             let geocoder = new google.maps.Geocoder();
 
-            }
+              geocoder.geocode({ 'address': address },  (results, status) => {
 
-            
-        }.bind(this));
+                  if (status == google.maps.GeocoderStatus.OK) {
+                      if(typeof results[0].geometry.bounds != 'undefined') this.map.fitBounds(results[0].geometry.bounds)
+                      else 
+                      {
+                        this.map.setCenter(results[0].geometry.location);
+                        this.map.setZoom(17)
+                      }
+                      this.insertMarker(results[0].geometry.location)
+
+                  }
+
+                  
+              });
+        }, 1000)
+       
     }
 }
 

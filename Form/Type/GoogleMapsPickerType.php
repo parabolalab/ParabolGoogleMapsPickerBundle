@@ -25,10 +25,13 @@ class GoogleMapsPickerType extends AbstractType
         $resolver->setDefaults(array(
                 'scriptUrl' => null,
                 'initLatLng' => [0,0],
+                'initWithRefreshMarker' => false,
                 'initWithMarker' => true,
                 'showLabel' => false,
                 'mapOptions' => [],
-                'addressField' => null
+                'addressField' => null,
+                'mapHeight' => null,
+                'required' => false,
         ));
     }
 
@@ -40,10 +43,9 @@ class GoogleMapsPickerType extends AbstractType
         $view->vars['initLatLng'] = $view->vars['data'] ? array_values($view->vars['data']) : $options['initLatLng'];
         $view->vars['scriptUrl'] = $options['scriptUrl'];
         $view->vars['initWithMarker'] = $options['initWithMarker'];
+        $view->vars['initWithRefreshMarker'] = $options['initWithRefreshMarker'];
         $view->vars['addressField'] = $options['addressField'] ? $options['addressField'] : 'form_address';
-        $view->vars['mapOptions'] = json_encode($options['mapOptions']);
-       
-        
+        $view->vars['mapOptions'] = json_encode($options['mapOptions']);       
     }
 
     public function getBlockPrefix()

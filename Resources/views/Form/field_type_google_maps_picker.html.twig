@@ -1,6 +1,6 @@
 {% block parabol_google_maps_picker_widget %}
 
-<div id="{{ form.vars.id }}_map_canvas" style="width:100%; height:{{ height is defined ? height : '660'}}px"></div>
+<div id="{{ form.vars.id }}_map_canvas" style="width:100%; min-height: 300px; height: 50vh"></div>
 
 {# {{ dump(form) }} #}
 {% for row in form.children %}
@@ -12,6 +12,7 @@
       .form-model-type-parabolGoogleMapsPickerbundleformtypeGoogleMapsPickertype > .form-group > label { display: none;  }
   </style>
 {% endif %}
+
 
 {# <input type="text" id="{{ form.vars.id }}_lat" name="{{ form.vars.full_name }}[]" value="" />
 <input type="text" id="{{ form.vars.id }}_lng" name="{{ form.vars.full_name }}[]" value="" /> #}
@@ -38,7 +39,8 @@ $(document).ready(function(){
       mapId: '{{ form.vars.id }}_map_canvas',
       coordsInputsPrefix: '{{ form.vars.id }}_',
       initLatLng: [{{ form.vars.initLatLng | join(',') }}],
-      initWithMarker: [{{ form.vars.initWithMarker }}],
+      initWithMarker: {{ form.vars.initWithMarker  ? 'true' : 'false' }},
+      initWithRefreshMarker: {{ form.vars.initWithRefreshMarker ? 'true' : 'false' }},
       mapOptions: {{ form.vars.mapOptions | raw }},
       addressField: '{{ form.vars.addressField }}'
     });
