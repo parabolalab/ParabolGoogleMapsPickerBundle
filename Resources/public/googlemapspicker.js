@@ -2,40 +2,41 @@ class GoogleMapPicker {
    
     constructor({ mapId = 'map_canvas', initLatLng = [0,0], coordsInputsPrefix = '', addressField = 'form_address',  initWithMarker = true, initWithRefreshMarker = false, mapOptions = { }, markers = [] } = {} ){
       
-      this.mapId = mapId
-      this.marker = null;
-      this.markers = [];
-      this.dragEvent = null;
-      this.coordsInputsPrefix = coordsInputsPrefix;
-      this.addressField = addressField
-      this.mapOptions = Object.assign({}, {zoom: 6, center: this.createLatLng(initLatLng[0], initLatLng[1]), streetViewControl: false, scrollwheel: false }, mapOptions)
-      this.init(initWithMarker);
-      this.setMarkers(markers)
-      this.queryString = '';
-      this.request = null;
+        this.mapId = mapId
+        this.marker = null;
+        this.markers = [];
+        this.dragEvent = null;
+        this.coordsInputsPrefix = coordsInputsPrefix;
+        this.addressField = addressField
+        this.mapOptions = Object.assign({}, {zoom: 6, center: this.createLatLng(initLatLng[0], initLatLng[1]), streetViewControl: false, scrollwheel: false }, mapOptions)
+        this.init(initWithMarker);
+        this.setMarkers(markers)
+        this.queryString = '';
+        this.request = null;
 
-      
-      document.querySelectorAll( this.addressField ).forEach( (item) => {
+        
+        document.querySelectorAll( this.addressField ).forEach( (item) => {
 
-      item.onkeyup = (e) => {
+          item.onkeyup = (e) => {
 
-        console.log('onkeyup');
-       
-         this.applyLatLagByAddress(e.target.value);
+              let value = '';
+              document.querySelectorAll( this.addressField ).forEach( (item) => value += ((value ? ', ' : '') + item.value ) )
+             
+              this.applyLatLagByAddress(value);
 
-         // if(e.target.value)
-         // {
-         //    this.applyLatLagByAddress(e.target.value);
-         // }
-      }
+               // if(e.target.value)
+               // {
+               //    this.applyLatLagByAddress(e.target.value);
+               // }
+            }
 
-      if(initWithRefreshMarker)
-      {
-          item.dispatchEvent(new Event('keyup'))
-      }
-    })
-      
-      
+          if(initWithRefreshMarker)
+          {
+              item.dispatchEvent(new Event('keyup'))
+          }
+        })
+        
+          
     }
 
     init(initWithMarker)
